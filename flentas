@@ -1,0 +1,75 @@
+function minimumCost(N,arr)
+{
+    let answer = 0,firstCost = 0,secCost = 0,thridCost = 0 ;
+    arr = quicksort(arr,0,arr.length - 1);
+    while(N>3)    {
+        firstCost = 2 * (arr[0]) + arr[N-1] + arr[N-2];
+        secCost = arr[N-1] + 2 * (arr[N-2]) + arr[N-3];
+        thridCost = arr[0] + 2 * (arr[1]) + arr[N-1];
+        answer += Math.min(firstCost,secCost,thridCost);
+        N = N-2;
+    }
+    if(N==3)
+    {
+        answer += arr[0] + arr[1] + arr[2];
+    }
+    else if(N==2)
+    {
+        answer += arr[1];
+    }
+    else if(N==1)
+    {
+        answer += arr[0];
+    }
+    console.log(answer);
+}
+function quicksort(arr,low,high)
+{    let i = low;
+    let j = high;
+    let pivotIndex = Math.floor((i+j)/2);
+    let pivot = arr[pivotIndex];
+ 
+    while(i<=j)
+    {        while(arr[i]<pivot)
+        {
+            i++;
+        }
+        while(arr[j]>pivot)
+        {
+            j--;
+        }
+        if(i<=j)
+        {
+            let swap = arr[i];
+            arr[i] = arr[j];
+            arr[j] = swap;
+            i++;
+            j--;
+        }
+    }
+    if(low<j)
+    {
+        arr = quicksort(arr,low,j);
+    }
+    if(high>i)
+    {
+        arr=quicksort(arr,i,high);
+    }
+    return arr;
+} 
+var stdin = process.openStdin();
+var input = '';
+stdin.addListener("data", function(d) {
+    input += d;
+  });
+stdin.addListener("end",function(){
+   let inputLines = input.split('\n');
+   let noOfTestCase = inputLines[0];
+   for(let i=1;i<inputLines.length;i++)
+   {
+      let N = Number(inputLines[i]);
+      let intArr = inputLines[i+1].split(' ').map(Number);
+       minimumCost(N,intArr);
+       i++;
+   }
+});
